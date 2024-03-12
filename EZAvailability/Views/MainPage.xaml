@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="EZAvailability.MainPage"
+             xmlns:viewmodel="clr-namespace:EZAvailability.ViewModel"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             Shell.NavBarIsVisible="False">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="{DynamicResource Tertiary}" />
+    </ContentPage.Behaviors>
+
+    <Grid BackgroundColor="{DynamicResource Primary}">
+        <Image Aspect="AspectFit" Source="loginbackground.png" />
+        <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+            <Image Source="logo.png"  Aspect="AspectFit" />
+
+            <Label Text="Sign In with your credentials" HorizontalTextAlignment="Center" FontSize="20" TextColor="White"></Label>
+            <StackLayout Margin="40,40,40,0">
+                <Label TextColor="White" Text="Email Address"></Label>
+                <Entry TextColor="White" Placeholder="someone@example.com" x:Name="EmailEntry" />
+                <Label TextColor="White" Text="Password"></Label>
+                <Entry TextColor="White" IsPassword="True" Placeholder="********" x:Name="PasswordEntry" />
+                <Button Text="Sign In" BackgroundColor="{DynamicResource Tertiary}" Margin="0,10,0,0" x:Name="BtnSignIn" Clicked="BtnSignIn_Clicked">
+                </Button>
+                <Button BackgroundColor="Transparent" Text="Trouble Signing In?" x:Name="BtnForgotPasswd" Clicked="BtnForgotPasswd_Clicked" />
+            </StackLayout>
+            <StackLayout HorizontalOptions="Center" Orientation="Horizontal" Margin="0, 50">
+                <Label TextColor="White" VerticalOptions="Center" Margin="10, 0, -10, 0">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span TextColor="White" Text="Connecting to: " />
+                            <Span TextColor="White" Text="{Binding Source={x:Static viewmodel:ConnectionViewModel.ConnectionUrl}}" FontAttributes="Bold" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Button BackgroundColor="Transparent" FontFamily="FASolid" Text="Edit" x:Name="BtnEditConn" Clicked="BtnEditConn_Clicked" />
+            </StackLayout>
+        </StackLayout>
+
+        <ActivityIndicator HeightRequest="50" IsVisible="{Binding isLoading}" IsRunning="{Binding isLoading}" BackgroundColor="Transparent" Color="{DynamicResource White}" />
+
+    </Grid>
+
+</ContentPage>
