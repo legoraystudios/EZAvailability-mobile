@@ -7,28 +7,19 @@ using System.Threading.Tasks;
 
 namespace EZAvailability.Model
 {
-    public class Connection : INotifyPropertyChanged
+    public class Connection
     {
+        public int Id { get; set; }
+        public string ApiUrl { get; set; }
 
-        private string _apiUrl;
-
-        public string ApiUrl { get { return _apiUrl; } 
-            set {
-                if (_apiUrl != value)
-                {
-                    _apiUrl = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(_apiUrl)));
-                }
-            } 
-        }
-
-        public Connection(string url)
+        public Connection()
         {
-            ApiUrl = url;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ApiUrl)));
+            ApiUrl = String.Empty;
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
+        public Connection(string apiUrl)
+        {
+            ApiUrl = apiUrl;
+        }
     }
 }

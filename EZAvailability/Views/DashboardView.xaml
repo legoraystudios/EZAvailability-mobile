@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="EZAvailability.Views.DashboardView"
+             Title="Dashboard">
+    <ScrollView>
+        <StackLayout Margin="20">
+            
+            <StackLayout Spacing="0" Margin="0,0,0,20">
+                <VerticalStackLayout>
+                    <Label Text="{Binding Path=[0].first_name, StringFormat='Hey, {0}!'}" FontAttributes="Bold" FontSize="20" />
+                    <Label Text="Welcome to your personal area" />
+                </VerticalStackLayout>
+            </StackLayout>
+            
+            <Grid ColumnSpacing="10" RowSpacing="10" x:Name="DashboardMetrics">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="0" Text="Summary" FontSize="15" FontAttributes="Bold" />
+
+                <Frame
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    BackgroundColor="{DynamicResource Gray50}"
+                    HeightRequest="120"
+                    BorderColor="{DynamicResource Gray50}"
+                    CornerRadius="3">
+
+                    <StackLayout>
+                        <HorizontalStackLayout HorizontalOptions="Center" Spacing="6">
+                            <Label FontFamily="FABootstrap" Text="&#xF1C7;" FontSize="35" VerticalTextAlignment="Center"
+                               TextColor="{DynamicResource PrimaryDark}" />
+                            <Label Text="Total Items:" FontSize="16" VerticalTextAlignment="Center"
+                               TextColor="{DynamicResource PrimaryDark}" />
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout HorizontalOptions="End">
+                            <Label Text="{Binding Path=[0].total_products}" FontAttributes="Bold" FontSize="30" TextColor="{DynamicResource PrimaryDark}" />
+                        </HorizontalStackLayout>
+                    </StackLayout>
+                </Frame>
+                <Frame
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    BackgroundColor="{DynamicResource Gray50}"
+                    HeightRequest="120"
+                    BorderColor="{DynamicResource Gray50}"
+                    CornerRadius="3">
+
+                    <StackLayout>
+                        <HorizontalStackLayout HorizontalOptions="Center" Spacing="6">
+                            <Label FontFamily="FABootstrap" Text="&#xF3F2;" FontSize="35" VerticalTextAlignment="Center"
+                               TextColor="{DynamicResource Success}" />
+                            <Label Text="Total Stock:" FontSize="16" VerticalTextAlignment="Center"
+                               TextColor="{DynamicResource Success}" />
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout HorizontalOptions="End">
+                            <Label Text="{Binding Path=[0].total_stock}" FontAttributes="Bold" FontSize="30" TextColor="{DynamicResource Success}" />
+                        </HorizontalStackLayout>
+                    </StackLayout>
+
+                </Frame>
+
+                <Frame
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    BackgroundColor="{DynamicResource Gray50}"
+                    HeightRequest="120"
+                    BorderColor="{DynamicResource Gray50}"
+                    CornerRadius="3">
+
+                    <StackLayout>
+                        <HorizontalStackLayout HorizontalOptions="Center" Spacing="6">
+                            <Label FontFamily="FABootstrap" Text="&#xF33B;" FontSize="35" VerticalTextAlignment="Center"
+                               TextColor="{DynamicResource Orange}" />
+                            <Label Text="Low Stock:" FontSize="16" VerticalTextAlignment="Center"
+                               TextColor="{DynamicResource Orange}" />
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout HorizontalOptions="End">
+                            <Label Text="{Binding Path=[0].total_low_stock_items}" FontAttributes="Bold" FontSize="30" TextColor="{DynamicResource Orange}" />
+                        </HorizontalStackLayout>
+                    </StackLayout>
+
+                </Frame>
+
+                <Frame
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    BackgroundColor="{DynamicResource Gray50}"
+                    HeightRequest="120"
+                    BorderColor="{DynamicResource Gray50}"
+                    CornerRadius="3">
+
+                    <StackLayout>
+                        <HorizontalStackLayout HorizontalOptions="Center" Spacing="6">
+                            <Label FontFamily="FABootstrap" Text="&#xF623;" FontSize="30" VerticalTextAlignment="Center"
+                               TextColor="{DynamicResource Danger}" />
+                            <Label Text="Out of Stock:" FontSize="16" VerticalTextAlignment="Center"
+                               TextColor="{DynamicResource Danger}" />
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout HorizontalOptions="End">
+                            <Label Text="{Binding Path=[0].total_out_of_stock}" FontSize="30" FontAttributes="Bold" TextColor="{DynamicResource Danger}" />
+                        </HorizontalStackLayout>
+                    </StackLayout>
+
+                </Frame>
+
+            </Grid>
+
+            <StackLayout Spacing="5" Margin="10,50">
+                <Button BackgroundColor="{DynamicResource Gray100}" CornerRadius="5"
+                        Text="Scan IN" TextColor="{DynamicResource Black}" FontSize="18"
+                        FontAttributes="Bold">
+                    <Button.ImageSource>
+                        <FontImageSource FontFamily="FABootstrap" Glyph="&#xF601;" Size="20" Color="{DynamicResource Black}" />
+                    </Button.ImageSource>
+                </Button>
+                <Button BackgroundColor="{DynamicResource Gray100}" CornerRadius="5"
+                        Text="Scan OUT" TextColor="{DynamicResource Black}" FontSize="18"
+                        FontAttributes="Bold">
+                    <Button.ImageSource>
+                        <FontImageSource FontFamily="FABootstrap" Glyph="&#xF601;" Size="20" Color="{DynamicResource Black}" />
+                    </Button.ImageSource>
+                </Button>
+                <Button BackgroundColor="{DynamicResource Gray100}" CornerRadius="5"
+                        Text="Product Information" TextColor="{DynamicResource Black}" FontSize="18"
+                        FontAttributes="Bold">
+                    <Button.ImageSource>
+                        <FontImageSource FontFamily="FABootstrap" Glyph="&#xF507;" Size="20" Color="{DynamicResource Black}" />
+                    </Button.ImageSource>
+                </Button>
+                <Button BackgroundColor="{DynamicResource Gray100}" CornerRadius="5"
+                        Text="Manage Inventory" TextColor="{DynamicResource Black}" FontSize="18"
+                        FontAttributes="Bold" x:Name="BtnInventory" Clicked="BtnInventory_Clicked">
+                    <Button.ImageSource>
+                        <FontImageSource FontFamily="FABootstrap" Glyph="&#xF52A;" Size="20" Color="{DynamicResource Black}" />
+                    </Button.ImageSource>
+                </Button>
+                <Button BackgroundColor="{DynamicResource Gray100}" CornerRadius="5"
+                        Text="Shopping List" TextColor="{DynamicResource Black}" FontSize="18"
+                        FontAttributes="Bold">
+                    <Button.ImageSource>
+                        <FontImageSource FontFamily="FABootstrap" Glyph="&#xF244;" Size="20" Color="{DynamicResource Black}" />
+                    </Button.ImageSource>
+                </Button>
+            </StackLayout>
+            <StackLayout>
+                <ActivityIndicator HeightRequest="50" TranslationX="0" TranslationY="-500" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" IsVisible="{Binding isLoading}" IsRunning="{Binding isLoading}" BackgroundColor="Transparent" Color="{DynamicResource PrimaryDark}" />
+            </StackLayout>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

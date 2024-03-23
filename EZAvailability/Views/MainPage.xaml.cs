@@ -4,12 +4,13 @@ using EZAvailability.ViewModel.Base;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using Font = Microsoft.Maui.Font;
+using EZAvailability.Data;
+using EZAvailability.Services;
 
 namespace EZAvailability
 {
     public partial class MainPage : ContentPage
     {
-        private LoginViewModel loginViewModel = new LoginViewModel();
         private BaseViewModel baseViewModel = new BaseViewModel();
 
         public MainPage()
@@ -18,6 +19,7 @@ namespace EZAvailability
             InitializeComponent();
 
             NavigationPage.SetHasNavigationBar(this, false);
+            CheckIfLogin();
             this.BindingContext = baseViewModel;
 
         }
@@ -27,13 +29,13 @@ namespace EZAvailability
         {
             base.OnAppearing();
             Device.BeginInvokeOnMainThread(async () =>
+            {
+                string apiUrl = ConnectionViewModel.ConnectionUrl;
+                if (apiUrl == null || apiUrl == "Not Found")
                 {
-                    string apiUrl = ConnectionViewModel.ConnectionUrl;
-                    if (apiUrl == null || apiUrl == "Not Found")
-                    {
-                        await ConnectionShowPopUp();
-                    }
-                });
+                    await ConnectionShowPopUp();
+                }
+            });
         }
 
         private async Task ConnectionShowPopUp()
@@ -47,6 +49,7 @@ namespace EZAvailability
                 bool alertResult = false;
 
                 baseViewModel.isLoading = true;
+
                 if (response != 0)
                 {
                     switch (response)
@@ -61,12 +64,28 @@ namespace EZAvailability
                             break;
                     }
 
-                    if(alertResult)
+                    if (alertResult)
                     {
                         await ConnectionShowPopUp();
                         baseViewModel.isLoading = false;
                     }
                 }
+            }
+        }
+
+        private async void CheckIfLogin()
+        {
+            try
+            {
+                ResponseData response = await AuthService.Token();
+
+                if (response.StatusCode == 200)
+                {
+                    await Navigation.PushAsync(new Views.DashboardView());
+                }
+            } catch 
+            {
+               await DisplayAlert("Error", "An error has occured while performing your request. Please, check your network and API connection and try again.", "Okay");
             }
         }
 
@@ -82,36 +101,48 @@ namespace EZAvailability
 
         private async void BtnSignIn_Clicked(object sender, EventArgs e)
         {
-            baseViewModel.isLoading = true;
-
-            int response = await loginViewModel.Login(EmailEntry.Text, PasswordEntry.Text);
-
-            if (response == 200)
+            try
             {
+                baseViewModel.isLoading = true;
 
-                var snackbarOptions = new SnackbarOptions
+                int response = await AuthService.Login(EmailEntry.Text, PasswordEntry.Text);
+
+                if (response == 200)
                 {
-                    BackgroundColor = Color.FromHex("#198754"),
-                    Font = Font.SystemFontOfSize(15),
-                    TextColor = Color.FromHex("#FFFFFF")
-                };
 
-                var snackbar = Snackbar.Make("You're Logged in! Redirecting...", null, "", null, snackbarOptions);
-                snackbar.Show();
-            } else
+                    var snackbarOptions = new SnackbarOptions
+                    {
+                        BackgroundColor = Color.FromHex("#198754"),
+                        Font = Font.SystemFontOfSize(15),
+                        TextColor = Color.FromHex("#FFFFFF")
+                    };
+
+                    var snackbar = Snackbar.Make("You're Logged in! Redirecting...", null, "", null, snackbarOptions);
+                    snackbar.Show();
+                    //Application.Current.MainPage = new NavigationPage(new Views.DashboardView());
+                    await Shell.Current.GoToAsync("//DashboardView");
+
+                }
+                else
+                {
+                    var snackbarOptions = new SnackbarOptions
+                    {
+                        BackgroundColor = Color.FromHex("#DC3545"),
+                        Font = Font.SystemFontOfSize(15),
+                        TextColor = Color.FromHex("#FFFFFF")
+                    };
+
+                    var snackbar = Snackbar.Make("ERROR | Email or password are incorrect.", null, "", null, snackbarOptions);
+                    snackbar.Show();
+                }
+
+                baseViewModel.isLoading = false;
+            } catch (Exception)
             {
-                var snackbarOptions = new SnackbarOptions
-                {
-                    BackgroundColor = Color.FromHex("#DC3545"),
-                    Font = Font.SystemFontOfSize(15),
-                    TextColor = Color.FromHex("#FFFFFF")
-                };
-
-                var snackbar = Snackbar.Make("ERROR | Email or password are incorrect.", null, "", null, snackbarOptions);
-                snackbar.Show();
+                await DisplayAlert("Error", "An error has occured while performing your request. Please, check your network and API connection and try again." , "Okay");
+                baseViewModel.isLoading = false;
             }
 
-            baseViewModel.isLoading = false;
         }
     }
 

@@ -11,10 +11,9 @@ namespace EZAvailability.ViewModel;
 public class ConnectionViewModel : BaseViewModel
 {
     public static string ConnectionUrl { get; set; }
-    private BaseViewModel baseViewModel = new BaseViewModel();
 
-    //private static string folderPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-    private static string _filePath = FileSystem.AppDataDirectory + "/EZAConnection.json";
+    private BaseViewModel baseViewModel = new BaseViewModel();
+    private static string _filePath = FileSystem.CacheDirectory + "/EZAConnection.json";
 
     public static async Task<int> AddConnection(string apiUrl)
     {
@@ -28,27 +27,31 @@ public class ConnectionViewModel : BaseViewModel
 
             apiUrl = apiUrl.TrimEnd('/');
 
-            using (HttpClient client = new HttpClient())
-            {
-                HttpResponseMessage response = await client.GetAsync(apiUrl);
+                var _httpClient = new HttpClient();
+                _httpClient.BaseAddress = new Uri(apiUrl);
+
+                HttpResponseMessage response = await _httpClient.GetAsync("");
+                response.EnsureSuccessStatusCode();
 
                 if (response.IsSuccessStatusCode)
                 {
+
                     Connection conn = new Connection(apiUrl);
                     var writtenData = JsonSerializer.Serialize(conn);
                     File.WriteAllText(_filePath, writtenData);
 
-                    Application.Current.MainPage = new AppShell();
+                    Application? current = Application.Current;
+                    current.MainPage = new AppShell();
                     return 0;
                 }
                 else
                 {
-                    Application.Current.MainPage = new AppShell();
                     return -1;
                 }
-            }
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
+            Console.WriteLine($"[EZAvailability Errors] Error in AddConnection: {ex.Message}");
             return -2;
         }
 
@@ -56,21 +59,29 @@ public class ConnectionViewModel : BaseViewModel
 
     public static void GetConnection()
     {
-        if (File.Exists(_filePath) && new FileInfo(_filePath).Length > 0)
+        try
         {
-            string jsonDocument = File.ReadAllText(_filePath);
-
-            JsonDocument jsonParse = JsonDocument.Parse(jsonDocument);
-            JsonElement root = jsonParse.RootElement;
-
-            if (root.TryGetProperty("ApiUrl", out JsonElement value))
+            if (File.Exists(_filePath) && new FileInfo(_filePath).Length > 0)
             {
-                ConnectionUrl = value.GetString();
+                string jsonDocument = File.ReadAllText(_filePath);
+
+                JsonDocument jsonParse = JsonDocument.Parse(jsonDocument);
+                JsonElement root = jsonParse.RootElement;
+
+                if (root.TryGetProperty("ApiUrl", out JsonElement value))
+                {
+                    ConnectionUrl = value.GetString();
+                }
             }
-        } else
+            else
+            {
+                ConnectionUrl = "Not Found";
+            }
+        } catch (Exception ex)
         {
-            ConnectionUrl = "Not Found";
+            Console.WriteLine($"[EZAvailability Errors] Error in GetConnection: {ex.Message}");
         }
+
     }
 
 }
