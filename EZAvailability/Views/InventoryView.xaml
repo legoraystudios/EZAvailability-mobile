@@ -7,80 +7,83 @@
     <ContentPage.Resources>
         <qtyconverter:QtyToColorConverter x:Key="QtyToColorConverter" />
     </ContentPage.Resources>
-    
-    <StackLayout>
-        <HorizontalStackLayout HorizontalOptions="Center" Margin="0,10,0,0">
-            <Button Text="Search">
-                <Button.ImageSource>
-                    <FontImageSource FontFamily="FABootstrap" Glyph="&#xF52A;" Size="15" />
-                </Button.ImageSource>
-            </Button>
-            <Entry Placeholder="Type here to Search"></Entry>
-            <Picker x:Name="SearchType" Title="Search By..." SelectedIndex="0">
-                <Picker.ItemsSource>
-                    <x:Array Type="{x:Type x:String}">
-                        <x:String>Product Name</x:String>
-                        <x:String>Product ID</x:String>
-                        <x:String>Category Name</x:String>
-                    </x:Array>
-                </Picker.ItemsSource>
-            </Picker>
-        </HorizontalStackLayout>
-        <StackLayout>
-            <ListView ItemsSource="{Binding Products}"
-                      HasUnevenRows="True" Margin="0,20,0,0"
-                      IsPullToRefreshEnabled="True">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="20" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="110" />
-                                </Grid.ColumnDefinitions>
-                                <StackLayout Grid.Column="1" Margin="10">
-                                    <HorizontalStackLayout>
-                                        <Label FontFamily="FABootstrap" Text="&#xF1C7;" TextColor="{DynamicResource Primary}" FontSize="20" Margin="0,0,5,0"></Label>
-                                        <Label Text="{Binding product_name}" FontAttributes="Bold"></Label>
-                                    </HorizontalStackLayout>
-                                    <HorizontalStackLayout>
-                                        <Label FontFamily="FABootstrap" Text="&#xF40A;" TextColor="{DynamicResource Primary}" FontSize="20" Margin="0,0,5,0"></Label>
-                                        <Label Text="{Binding product_id}"></Label>
-                                    </HorizontalStackLayout>
-                                    <HorizontalStackLayout>
-                                        <Label FontFamily="FABootstrap" Text="&#xF601;" TextColor="{DynamicResource Primary}" FontSize="20" Margin="0,0,5,0"></Label>
-                                        <Label Text="{Binding product_upc}"></Label>
-                                    </HorizontalStackLayout>
-                                    <HorizontalStackLayout>
-                                        <Label FontFamily="FABootstrap" Text="&#xF2EC;" TextColor="{DynamicResource Primary}" FontSize="20" Margin="0,0,5,0"></Label>
-                                        <Label Text="{Binding category_name}"></Label>
-                                    </HorizontalStackLayout>
-                                </StackLayout>
-                                <HorizontalStackLayout VerticalOptions="Center" Grid.Column="2">
 
-                                    <Label Text="{Binding product_qty, StringFormat='{0} In Stock'}" 
-                                           FontAttributes="Bold" VerticalOptions="Center"/>
-                                    <Label FontFamily="FABootstrap" Text="&#xF287;" FontSize="20" 
-                                           Margin="5,0,5,0" VerticalOptions="Center">
-                                        <Label.TextColor>
-                                            <MultiBinding Converter="{StaticResource QtyToColorConverter}">
-                                                <Binding Path="product_qty" />
-                                                <Binding Path="low_stock_alert" />
-                                                <!-- Add another binding here if needed -->
-                                            </MultiBinding>
-                                        </Label.TextColor>
-                                    </Label>
-                                </HorizontalStackLayout>
-                            </Grid>
-                            <!-- Customize further if needed -->
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+    <ScrollView x:Name="ProductScrollView" Scrolled="OnProductListViewScrolled">
+        <StackLayout>
+            <HorizontalStackLayout HorizontalOptions="Center" Margin="0,10,0,0">
+                <Button x:Name="SearchBtn" Clicked="SearchBtn_Clicked" Text="Search">
+                    <Button.ImageSource>
+                        <FontImageSource FontFamily="FABootstrap" Glyph="&#xF52A;" Size="15" />
+                    </Button.ImageSource>
+                </Button>
+                <Entry x:Name="SearchValue_Entry" Placeholder="Type here to Search"></Entry>
+                <Picker x:Name="SearchType_Select" SelectedIndexChanged="OnSearchTypeSelected" Title="Search By...">
+                    <Picker.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>Product Name</x:String>
+                            <x:String>Product ID</x:String>
+                            <x:String>Category Name</x:String>
+                        </x:Array>
+                    </Picker.ItemsSource>
+                </Picker>
+            </HorizontalStackLayout>
             <StackLayout>
-                <ActivityIndicator HeightRequest="50" TranslationX="0" TranslationY="-500" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" IsVisible="{Binding isLoading}" IsRunning="{Binding isLoading}" BackgroundColor="Transparent" Color="{DynamicResource PrimaryDark}" />
+                <ListView x:Name="ProductList"
+                          ItemsSource="{Binding Products}"
+                          HasUnevenRows="True" Margin="0,20,0,0"
+                          IsPullToRefreshEnabled="True">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="20" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="110" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackLayout Grid.Column="1" Margin="10">
+                                        <HorizontalStackLayout>
+                                            <Label FontFamily="FABootstrap" Text="&#xF1C7;" TextColor="{DynamicResource Primary}" FontSize="20" Margin="0,0,5,0"></Label>
+                                            <Label Text="{Binding product_name}" FontAttributes="Bold"></Label>
+                                        </HorizontalStackLayout>
+                                        <HorizontalStackLayout>
+                                            <Label FontFamily="FABootstrap" Text="&#xF40A;" TextColor="{DynamicResource Primary}" FontSize="20" Margin="0,0,5,0"></Label>
+                                            <Label Text="{Binding product_id}"></Label>
+                                        </HorizontalStackLayout>
+                                        <HorizontalStackLayout>
+                                            <Label FontFamily="FABootstrap" Text="&#xF601;" TextColor="{DynamicResource Primary}" FontSize="20" Margin="0,0,5,0"></Label>
+                                            <Label Text="{Binding product_upc}"></Label>
+                                        </HorizontalStackLayout>
+                                        <HorizontalStackLayout>
+                                            <Label FontFamily="FABootstrap" Text="&#xF2EC;" TextColor="{DynamicResource Primary}" FontSize="20" Margin="0,0,5,0"></Label>
+                                            <Label Text="{Binding category_name}"></Label>
+                                        </HorizontalStackLayout>
+                                    </StackLayout>
+                                    <HorizontalStackLayout VerticalOptions="Center" Grid.Column="2">
+
+                                        <Label Text="{Binding product_qty, StringFormat='{0} In Stock'}" 
+                                                   FontAttributes="Bold" VerticalOptions="Center"/>
+                                        <Label FontFamily="FABootstrap" Text="&#xF287;" FontSize="20" 
+                                                   Margin="5,0,5,0" VerticalOptions="Center">
+                                            <Label.TextColor>
+                                                <MultiBinding Converter="{StaticResource QtyToColorConverter}">
+                                                    <Binding Path="product_qty" />
+                                                    <Binding Path="low_stock_alert" />
+                                                    <!-- Add another binding here if needed -->
+                                                </MultiBinding>
+                                            </Label.TextColor>
+                                        </Label>
+                                    </HorizontalStackLayout>
+                                </Grid>
+                                <!-- Customize further if needed -->
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <StackLayout x:Name="LoadingModule">
+                    <ActivityIndicator HeightRequest="50" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" IsVisible="{Binding isLoading}" IsRunning="{Binding isLoading}" BackgroundColor="Transparent" Color="{DynamicResource PrimaryDark}" />
+                </StackLayout>
             </StackLayout>
         </StackLayout>
-    </StackLayout>
+    </ScrollView>
 </ContentPage>
