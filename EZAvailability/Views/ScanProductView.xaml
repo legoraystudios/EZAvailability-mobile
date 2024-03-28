@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="EZAvailability.Views.ScanProductView"
+             xmlns:zxing="clr-namespace:ZXing.Net.Maui.Controls;assembly=ZXing.Net.MAUI.Controls"
+             Title="Scan Item">
+
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="150" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        
+        <!-- CameraBarcodeReaderView -->
+        <zxing:CameraBarcodeReaderView IsDetecting="True" IsEnabled="True" IsTorchOn="False" x:Name="barcodeReader"
+                                       BarcodesDetected="CameraBarcodeReaderView_BarcodesDetected"
+                                       Grid.Row="0" Grid.Column="0"/>
+
+        <!-- Banner -->
+        <StackLayout Grid.Row="1" Grid.Column="0" BackgroundColor="{DynamicResource White}"
+                     HeightRequest="150" VerticalOptions="End" Padding="20,0,20,0">
+            <Label Text="Scan items and more!" HorizontalOptions="CenterAndExpand" 
+                   VerticalOptions="CenterAndExpand" FontSize="20" FontAttributes="Bold"></Label>
+            <Label Text="Point your camera to a product barcode to get the product information." 
+                   VerticalOptions="CenterAndExpand" HorizontalOptions="Center" LineBreakMode="WordWrap"
+                   HorizontalTextAlignment="Center"></Label>
+        </StackLayout>
+    </Grid>
+</ContentPage>

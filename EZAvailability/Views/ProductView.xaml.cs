@@ -2,30 +2,32 @@ using EZAvailability.Data;
 using EZAvailability.Services;
 using EZAvailability.ViewModel.Base;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.Text.Json.Serialization;
-using UserData = EZAvailability.Data.UserData;
+using System.Buffers;
 
 namespace EZAvailability.Views;
 
-public partial class DashboardView : ContentPage
+public partial class ProductView : ContentPage
 {
-
     private BaseViewModel baseViewModel = new BaseViewModel();
-    public DashboardView()
+    private long productUpc;
+
+    // Product Lists
+    List<ProductData> productInfo;
+    public List<ProductData> Product { get; set; }
+
+    public ProductView(long productUpc)
 	{
-        InitializeComponent();
+        this.productUpc = productUpc;
 
-        this.BindingContext = baseViewModel;
-        NavigationPage.SetHasNavigationBar(this, true);
+		InitializeComponent();
+        LoadingModule.BindingContext = baseViewModel;
     }
-
     protected override async void OnAppearing()
     {
         base.OnAppearing();
         baseViewModel.isLoading = true;
         await LoadUser();
-        await LoadMetrics();
+        await LoadProduct();
         baseViewModel.isLoading = false;
     }
 
@@ -35,33 +37,43 @@ public partial class DashboardView : ContentPage
         BindingContext = userInfo;
     }
 
-    private async Task LoadMetrics()
+    private async Task LoadProduct()
     {
-        List<MetricData> metricInfo = await GetMetrics();
-        DashboardMetrics.BindingContext = metricInfo;
+        baseViewModel.isLoading = true;
+        productInfo = await GetProduct();
+        Product = productInfo;
+        BindingContext = this;
+        baseViewModel.isLoading = false;
     }
 
-    private async Task<List<MetricData>> GetMetrics()
+    private async Task<List<ProductData>> GetProduct()
     {
         try
         {
-            ResponseData response = await MetricService.GetMetrics();
+
+            ResponseData response = await ProductService.GetProductsByUpc(productUpc);
             string jsonResponse = response.JsonResponse;
 
-            List<MetricData> metricData = JsonConvert.DeserializeObject<List<MetricData>>(jsonResponse);
+            List<ProductData> productData = JsonConvert.DeserializeObject<List<ProductData>>(jsonResponse);
 
             if (response.StatusCode != 200)
             {
                 await Navigation.PushAsync(new MainPage());
             }
 
-            return metricData;
-        } catch (Exception)
+            if (productData.Count == 0)
+            {
+                await Navigation.PushAsync(new DashboardView());
+                await DisplayAlert("Item not Found", "The item that you requested was not found in our records.", "Okay");
+            }
+
+            return productData;
+        }
+        catch (Exception ex)
         {
-            await DisplayAlert("Error", "An error has occured while loading the metrics. Please, try again later.", "Okay");
+            await DisplayAlert("Error", "An error has occured while loading the product. Please, try again later." + ex, "Okay");
             return null;
         }
-
 
     }
 
@@ -80,23 +92,13 @@ public partial class DashboardView : ContentPage
             }
 
             return userData;
-        } catch (Exception)
+        }
+        catch (Exception)
         {
             await DisplayAlert("Error", "An error has occured while performing your request. Please, try again later.", "Okay");
             await Navigation.PushAsync(new MainPage());
             return null;
         }
 
-
-    }
-
-    private async void BtnInventory_Clicked(object sender, EventArgs e)
-    {
-        await Navigation.PushAsync(new InventoryView());
-    }
-
-    private async void BtnProductInfo_Clicked(object sender, EventArgs e)
-    {
-        await Navigation.PushAsync(new ScanProductView());
     }
 }

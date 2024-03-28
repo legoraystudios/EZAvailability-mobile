@@ -22,12 +22,12 @@ public partial class InventoryView : ContentPage
     private int page = 1;
 
     // Variables for the Search Bar
-    private string SearchValue {  get; set; }
+    private string SearchValue { get; set; }
     private int SelectedSearchType;
 
     public InventoryView()
-	{
-		InitializeComponent();
+    {
+        InitializeComponent();
         LoadingModule.BindingContext = baseViewModel;
 
         ProductList.Scrolled += OnProductListViewScrolled;
@@ -36,6 +36,7 @@ public partial class InventoryView : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
+        page = 1;
         baseViewModel.isLoading = true;
         await LoadUser();
         await LoadProducts();
@@ -50,10 +51,13 @@ public partial class InventoryView : ContentPage
 
     private async Task LoadProducts()
     {
+        baseViewModel.isLoading = true;
+        Products = null;
         BindingContext = null;
         productInfo = await GetProducts();
         Products = productInfo;
         BindingContext = this;
+        baseViewModel.isLoading = false;
     }
 
 
@@ -62,27 +66,38 @@ public partial class InventoryView : ContentPage
     {
         try
         {
-            if (SearchValue != null) // If the Search Bar is NOT NULL
+            ResponseData response;
+
+            if (SearchValue != null || SearchValue != "") // If the Search Bar is NOT NULL
             {
                 if (SelectedSearchType == 0) // If Search Type is by Product Name
                 {
-
+                    response = await ProductService.GetProductByName(SearchValue, limitPerPage, page);
                 } else if (SelectedSearchType == 1) // If Search Type is by Product ID
                 {
-
+                    if (long.TryParse(SearchValue, out long result))
+                    {
+                        response = await ProductService.GetProductsById(result);
+                    } else
+                    {
+                        await DisplayAlert("Invalid Product ID", "Please enter a valid Product ID and try again.", "Okay");
+                        response = await ProductService.GetProductsById(0);
+                    }
                 } else if (SelectedSearchType == 2) // If Search Type is by Product Name
                 {
-
-                } else // Get Products
+                    //response = await CategoryService.GetProductByCategoryId(limitPerPage, page);
+                    // THIS IS A TEMPORARY FETCH UNTIL CATEGORYSERVICE IS CREATED:
+                    response = await ProductService.GetProducts(limitPerPage, page);
+                }
+                else // Get Products
                 {
-
+                    response = await ProductService.GetProducts(limitPerPage, page);
                 }
             } else // Get Products
             {
-
+                response = await ProductService.GetProducts(limitPerPage, page);
             }
 
-            ResponseData response = await ProductService.GetProducts(limitPerPage, page);
             string jsonResponse = response.JsonResponse;
 
             List<ProductData> productData = JsonConvert.DeserializeObject<List<ProductData>>(jsonResponse);
@@ -174,13 +189,25 @@ public partial class InventoryView : ContentPage
 
     }
 
-    private void SearchBtn_Clicked(object sender, EventArgs e)
+    private async void SearchBtn_Clicked(object sender, EventArgs e)
     {
         SearchValue = SearchValue_Entry.Text;
+        await LoadProducts();
     }
 
     private void OnSearchTypeSelected(object sender, EventArgs e)
     {
         SelectedSearchType = ((Picker)sender).SelectedIndex;
+    }
+
+    private async void ProductList_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+    {
+        if (e.SelectedItem != null)
+        {
+            ProductData selectedProduct = e.SelectedItem as ProductData;
+            long productUpc = selectedProduct.product_upc;
+
+            await Navigation.PushAsync(new ProductView(productUpc));
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 
 using CommunityToolkit.Maui;
+using ZXing.Net.Maui.Controls;
 
 namespace EZAvailability
 {
@@ -11,6 +12,7 @@ namespace EZAvailability
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseBarcodeReader()
                 .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
                 {

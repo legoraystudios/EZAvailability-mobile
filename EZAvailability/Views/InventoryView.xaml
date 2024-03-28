@@ -31,7 +31,8 @@
                 <ListView x:Name="ProductList"
                           ItemsSource="{Binding Products}"
                           HasUnevenRows="True" Margin="0,20,0,0"
-                          IsPullToRefreshEnabled="True">
+                          IsPullToRefreshEnabled="True"
+                          ItemSelected="ProductList_ItemSelected">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
@@ -73,6 +74,9 @@
                                                 </MultiBinding>
                                             </Label.TextColor>
                                         </Label>
+                                        <Label FontFamily="FABootstrap" Text="&#xF234;"
+                                               TextColor="{DynamicResource Gray500}"
+                                               VerticalOptions="Center"></Label>
                                     </HorizontalStackLayout>
                                 </Grid>
                                 <!-- Customize further if needed -->

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="EZAvailability.Views.ProductView"
+             xmlns:qtyconverter="clr-namespace:EZAvailability.Utilities"
+             Title="Product Details">
+    <ContentPage.Resources>
+        <qtyconverter:QtyToColorConverter x:Key="QtyToColorConverter" />
+    </ContentPage.Resources>
+
+    <StackLayout>
+        <ScrollView>
+            <StackLayout>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackLayout Grid.Column="0" Margin="20,50,20,30">
+                        <Image Source="image.jpg" />
+                    </StackLayout>
+                    <StackLayout Grid.Column="1" Margin="0,80,0,0">
+                        <StackLayout Margin="0,0,0,5" Spacing="2">
+                            <Label FontFamily="FABootstrap" Text="&#xF1C7;" TextColor="{DynamicResource Primary}" FontSize="20" Margin="0,0,5,0"></Label>
+                            <Label FontSize="15" FontAttributes="Bold" 
+                                   LineBreakMode="WordWrap"
+                                   Text="{Binding Product[0].product_name}">
+                            </Label>
+                        </StackLayout>
+                        <HorizontalStackLayout Margin="0,0,0,5" Spacing="2">
+                            <Label FontFamily="FABootstrap" Text="&#xF40A;" TextColor="{DynamicResource Primary}" FontSize="20" Margin="0,0,5,0"></Label>
+                            <Label FontSize="15" Text="{Binding Product[0].product_id}"></Label>
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout Margin="0,0,0,5" Spacing="2">
+                            <Label FontFamily="FABootstrap" Text="&#xF601;" TextColor="{DynamicResource Primary}" FontSize="20" Margin="0,0,5,0"></Label>
+                            <Label FontSize="15" Text="{Binding Product[0].product_upc}"></Label>
+                        </HorizontalStackLayout>
+                    </StackLayout>
+                </Grid>
+                <StackLayout Margin="20,0,20,0">
+                    <StackLayout>
+                        <Label FontSize="15"
+                               LineBreakMode="WordWrap"
+                               Text="{Binding Product[0].product_desc}"></Label>
+                    </StackLayout>
+                </StackLayout>
+
+                <Grid Margin="30,30,30,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackLayout HorizontalOptions="Center" Grid.Column="0">
+                        <Label FontSize="13" FontAttributes="Bold">On Hand:</Label>
+                        <HorizontalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Margin="0,4,0,0">
+                            <Label FontFamily="FABootstrap" Text="&#xF287;" FontSize="20" 
+                                                   Margin="5,0,5,0" VerticalOptions="Center">
+                                <Label.TextColor>
+                                    <MultiBinding Converter="{StaticResource QtyToColorConverter}">
+                                        <Binding Path="Product[0].product_qty" />
+                                        <Binding Path="Product[0].low_stock_alert" />
+                                        <!-- Add another binding here if needed -->
+                                    </MultiBinding>
+                                </Label.TextColor>
+                            </Label>
+                            <Label Text="{Binding Product[0].product_qty, StringFormat='{0}'}" 
+                                                   FontAttributes="Bold" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+                    </StackLayout>
+
+                    <StackLayout HorizontalOptions="Center" Grid.Column="1">
+                        <Label FontSize="13" FontAttributes="Bold">Product Category:</Label>
+                            <HorizontalStackLayout HorizontalOptions="Center" Margin="0,4,0,0">
+                                <Label FontFamily="FABootstrap" Text="&#xF2EC;" TextColor="{DynamicResource Primary}" FontSize="20" Margin="0,0,5,0"></Label>
+                            <Label Text="{Binding Product[0].category_name}"></Label>
+                            </HorizontalStackLayout>
+                    </StackLayout>
+
+                    <StackLayout HorizontalOptions="Center" Grid.Column="2">
+                            <Label FontSize="13" FontAttributes="Bold">Low Stock Alert:</Label>
+                            <HorizontalStackLayout HorizontalOptions="Center" Margin="0,4,0,0">
+                                <Label FontFamily="FABootstrap" Text="&#xF335;" TextColor="{DynamicResource Orange}" FontSize="20" Margin="0,0,5,0"></Label>
+                            <Label Text="{Binding Product[0].low_stock_alert}"></Label>
+                            </HorizontalStackLayout>
+                    </StackLayout>
+                </Grid>
+                <StackLayout x:Name="LoadingModule">
+                    <ActivityIndicator HeightRequest="50" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" IsVisible="{Binding isLoading}" IsRunning="{Binding isLoading}" BackgroundColor="Transparent" Color="{DynamicResource PrimaryDark}" />
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </StackLayout>
+    
+</ContentPage>

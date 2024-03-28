@@ -129,9 +129,9 @@
                         <FontImageSource FontFamily="FABootstrap" Glyph="&#xF601;" Size="20" Color="{DynamicResource Black}" />
                     </Button.ImageSource>
                 </Button>
-                <Button BackgroundColor="{DynamicResource Gray100}" CornerRadius="5"
-                        Text="Product Information" TextColor="{DynamicResource Black}" FontSize="18"
-                        FontAttributes="Bold">
+                <Button BackgroundColor="{DynamicResource Gray100}" CornerRadius="5" x:Name="BtnProductInfo" 
+                        Clicked="BtnProductInfo_Clicked" Text="Product Information" TextColor="{DynamicResource Black}" 
+                        FontSize="18" FontAttributes="Bold">
                     <Button.ImageSource>
                         <FontImageSource FontFamily="FABootstrap" Glyph="&#xF507;" Size="20" Color="{DynamicResource Black}" />
                     </Button.ImageSource>
