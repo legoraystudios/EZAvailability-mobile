@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="EZAvailability.Views.EditProductView"
+             Title="Edit Product"
+             >
+
+    <VerticalStackLayout>
+        <Grid RowDefinitions="*, Auto">
+            <ScrollView Grid.Row="0">
+                <VerticalStackLayout
+                        Padding="10"
+                        Spacing="2"
+                        Margin="0,5,5,5">
+                    <HorizontalStackLayout Spacing="10">
+                        <Frame HorizontalOptions="FillAndExpand" Padding="3,0,0,0">
+                            <Entry Placeholder="Product Name" TextColor="Black"></Entry>
+                        </Frame>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout Spacing="10">
+                        <Frame HorizontalOptions="FillAndExpand" Padding="3,0,0,0">
+                            <Entry Placeholder="Product Description" TextColor="Black"></Entry>
+                        </Frame>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout Spacing="10">
+                        <Frame HorizontalOptions="FillAndExpand" Padding="3,0,0,0">
+                            <Entry Placeholder="Product Quantity" TextColor="Black"></Entry>
+                        </Frame>
+                        <Frame HorizontalOptions="FillAndExpand" Padding="3,0,0,0">
+                            <Entry Placeholder="Product UPC" TextColor="Black"></Entry>
+                        </Frame>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout Spacing="10">
+                        <Frame HorizontalOptions="FillAndExpand" Padding="3,0,0,0">
+                            <Entry Placeholder="Product Category" TextColor="Black"></Entry>
+                        </Frame>
+                        <Frame HorizontalOptions="FillAndExpand" Padding="3,0,0,0">
+                            <Entry Placeholder="Low Stock Alert" TextColor="Black"></Entry>
+                        </Frame>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </ScrollView>
+        </Grid>
+    </VerticalStackLayout>
+</ContentPage>

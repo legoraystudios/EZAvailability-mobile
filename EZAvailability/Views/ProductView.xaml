@@ -8,6 +8,14 @@
         <qtyconverter:QtyToColorConverter x:Key="QtyToColorConverter" />
     </ContentPage.Resources>
 
+    <ContentPage.ToolbarItems>
+        <ToolbarItem x:Name="EditProductBtn" Clicked="EditProductBtn_Clicked">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="FABootstrap" Glyph="&#xF4CA;" Size="20" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
     <StackLayout>
         <ScrollView>
             <StackLayout>

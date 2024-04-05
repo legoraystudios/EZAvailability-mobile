@@ -2,6 +2,8 @@
 
 using CommunityToolkit.Maui;
 using ZXing.Net.Maui.Controls;
+using Plugin.Maui.Audio;
+using EZAvailability.Views;
 
 namespace EZAvailability
 {
@@ -24,8 +26,12 @@ namespace EZAvailability
                     fonts.AddFont("fa-solid-900.otf", "FASolid");
                 });
 
+            builder.Services.AddSingleton(AudioManager.Current);
+            builder.Services.AddTransient<ScanProductView>();
+            builder.Services.AddTransient<Views.ProductView, ViewModel.ProductViewModel>();
+
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
             return builder.Build();
         }

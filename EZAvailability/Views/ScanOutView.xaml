@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="EZAvailability.Views.ScanProductView"
+             x:Class="EZAvailability.Views.ScanOutView"
              xmlns:zxing="clr-namespace:ZXing.Net.Maui.Controls;assembly=ZXing.Net.MAUI.Controls"
-             Title="Scan Item">
+             Title="Scan OUT">
 
     <Grid>
 
@@ -22,12 +22,21 @@
 
         <!-- Banner -->
         <StackLayout Grid.Row="1" Grid.Column="0" BackgroundColor="{DynamicResource White}"
-                     HeightRequest="150" VerticalOptions="End" Padding="20,0,20,0">
-            <Label Text="Scan your item!" HorizontalOptions="CenterAndExpand" 
-                   VerticalOptions="CenterAndExpand" FontSize="20" FontAttributes="Bold"></Label>
-            <Label Text="Point your camera to a product barcode to get the product information." 
+                     HeightRequest="175" VerticalOptions="End" Padding="20,10,20,0">
+            <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="5">
+                <Label FontFamily="FABootstrap" Text="&#xF375;" HorizontalOptions="CenterAndExpand" 
+                   VerticalOptions="CenterAndExpand" FontSize="20" TextColor="{DynamicResource Danger}" FontAttributes="Bold"></Label>
+                <Label Text="Remove Items" HorizontalOptions="CenterAndExpand" 
+                   VerticalOptions="CenterAndExpand" FontSize="20" TextColor="{DynamicResource Danger}" FontAttributes="Bold"></Label>
+            </HorizontalStackLayout>
+            <Label Text="Point your camera to a product barcode to remove items on the inventory." 
                    VerticalOptions="CenterAndExpand" HorizontalOptions="Center" LineBreakMode="WordWrap"
                    HorizontalTextAlignment="Center"></Label>
+            <Grid ColumnDefinitions="*, Auto, *" VerticalOptions="Center" HorizontalOptions="Center">
+                <Button Grid.Column="0" Text="-" x:Name="QtyDecreaseBtn" Clicked="QtyDecreaseBtn_Clicked"  BackgroundColor="{DynamicResource Secondary}" />
+                <Entry Grid.Column="1" Text="" x:Name="QtyEntry" Keyboard="Numeric" Placeholder="Qty" TextChanged="Entry_TextChanged" />
+                <Button Grid.Column="2" Text="+" x:Name="QtyIncreaseBtn" Clicked="QtyIncreaseBtn_Clicked" BackgroundColor="{DynamicResource Secondary}" />
+            </Grid>
             <Button x:Name="AdvancedSearchBtn" Clicked="AdvancedSearchBtn_Clicked"  BackgroundColor="Transparent" TextColor="{DynamicResource Primary}" Text="Advanced Search">
                 <Button.ImageSource>
                     <FontImageSource FontFamily="FABootstrap" Glyph="&#xF52A;" Color="{DynamicResource Primary}" Size="15"></FontImageSource>

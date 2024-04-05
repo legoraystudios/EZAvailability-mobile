@@ -1,15 +1,18 @@
 using EZAvailability.Data;
 using EZAvailability.Services;
+using EZAvailability.Utilities;
 using EZAvailability.ViewModel.Base;
 using Newtonsoft.Json;
 using System.Buffers;
+using System.Reflection;
 
 namespace EZAvailability.Views;
 
 public partial class ProductView : ContentPage
 {
     private BaseViewModel baseViewModel = new BaseViewModel();
-    private long productUpc;
+    private SnackBars snackBar = new SnackBars();
+    public long productUpc;
 
     // Product Lists
     List<ProductData> productInfo;
@@ -21,6 +24,7 @@ public partial class ProductView : ContentPage
 
 		InitializeComponent();
         LoadingModule.BindingContext = baseViewModel;
+
     }
     protected override async void OnAppearing()
     {
@@ -42,7 +46,7 @@ public partial class ProductView : ContentPage
         baseViewModel.isLoading = true;
         productInfo = await GetProduct();
         Product = productInfo;
-        BindingContext = this;
+        this.BindingContext = this;
         baseViewModel.isLoading = false;
     }
 
@@ -63,8 +67,8 @@ public partial class ProductView : ContentPage
 
             if (productData.Count == 0)
             {
-                await Navigation.PushAsync(new DashboardView());
-                await DisplayAlert("Item not Found", "The item that you requested was not found in our records.", "Okay");
+                await Shell.Current.GoToAsync("//DashboardView");
+                snackBar.Snackbar_ScansErrorProd04(Navigation);
             }
 
             return productData;
@@ -100,5 +104,10 @@ public partial class ProductView : ContentPage
             return null;
         }
 
+    }
+
+    private async void EditProductBtn_Clicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new EditProductView());
     }
 }

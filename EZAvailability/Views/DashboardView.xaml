@@ -117,14 +117,14 @@
             <StackLayout Spacing="5" Margin="10,50">
                 <Button BackgroundColor="{DynamicResource Gray100}" CornerRadius="5"
                         Text="Scan IN" TextColor="{DynamicResource Black}" FontSize="18"
-                        FontAttributes="Bold">
+                        FontAttributes="Bold" x:Name="ScanInBtn" Clicked="ScanInBtn_Clicked">
                     <Button.ImageSource>
                         <FontImageSource FontFamily="FABootstrap" Glyph="&#xF601;" Size="20" Color="{DynamicResource Black}" />
                     </Button.ImageSource>
                 </Button>
                 <Button BackgroundColor="{DynamicResource Gray100}" CornerRadius="5"
                         Text="Scan OUT" TextColor="{DynamicResource Black}" FontSize="18"
-                        FontAttributes="Bold">
+                        FontAttributes="Bold" x:Name="ScanOutBtn" Clicked="ScanOutBtn_Clicked">
                     <Button.ImageSource>
                         <FontImageSource FontFamily="FABootstrap" Glyph="&#xF601;" Size="20" Color="{DynamicResource Black}" />
                     </Button.ImageSource>
@@ -145,7 +145,7 @@
                 </Button>
                 <Button BackgroundColor="{DynamicResource Gray100}" CornerRadius="5"
                         Text="Shopping List" TextColor="{DynamicResource Black}" FontSize="18"
-                        FontAttributes="Bold">
+                        FontAttributes="Bold" IsEnabled="False">
                     <Button.ImageSource>
                         <FontImageSource FontFamily="FABootstrap" Glyph="&#xF244;" Size="20" Color="{DynamicResource Black}" />
                     </Button.ImageSource>

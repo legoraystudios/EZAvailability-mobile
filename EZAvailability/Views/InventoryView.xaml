@@ -40,7 +40,7 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="20" />
                                         <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="110" />
+                                        <ColumnDefinition Width="120" />
                                     </Grid.ColumnDefinitions>
                                     <StackLayout Grid.Column="1" Margin="10">
                                         <HorizontalStackLayout>

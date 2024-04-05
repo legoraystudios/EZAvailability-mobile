@@ -119,7 +119,6 @@ namespace EZAvailability
 
                     var snackbar = Snackbar.Make("You're Logged in! Redirecting...", null, "", null, snackbarOptions);
                     snackbar.Show();
-                    //Application.Current.MainPage = new NavigationPage(new Views.DashboardView());
                     await Shell.Current.GoToAsync("//DashboardView");
 
                 }

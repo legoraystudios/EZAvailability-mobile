@@ -90,6 +90,16 @@ public partial class DashboardView : ContentPage
 
     }
 
+    private async void ScanInBtn_Clicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new ScanInView());
+    }
+
+    private async void ScanOutBtn_Clicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new ScanOutView());
+    }
+
     private async void BtnInventory_Clicked(object sender, EventArgs e)
     {
         await Navigation.PushAsync(new InventoryView());
