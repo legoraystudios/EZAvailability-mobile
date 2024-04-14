@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EZAvailability.Data
+namespace EZAvailability.Model
 {
-    public class ResponseData : BaseViewModel
+    public class ResponseModel : BaseViewModel
     {
         private int _statusCode;
         public int StatusCode

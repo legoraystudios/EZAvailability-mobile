@@ -7,39 +7,98 @@
 
     <VerticalStackLayout>
         <Grid RowDefinitions="*, Auto">
+
             <ScrollView Grid.Row="0">
+
                 <VerticalStackLayout
-                        Padding="10"
-                        Spacing="2"
-                        Margin="0,5,5,5">
-                    <HorizontalStackLayout Spacing="10">
+                    Padding="10"
+                    Spacing="2"
+                    Margin="0,5,5,5">
+                    <StackLayout Orientation="Horizontal">
+                        <Label
+                        FontAttributes="Bold"
+                        HorizontalOptions="FillAndExpand"
+                        Text="Product Name"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="10">
                         <Frame HorizontalOptions="FillAndExpand" Padding="3,0,0,0">
-                            <Entry Placeholder="Product Name" TextColor="Black"></Entry>
+                            <Entry TextColor="Black" Text="{Binding Product[0].product_name}" x:Name="lblProductName"></Entry>
                         </Frame>
-                    </HorizontalStackLayout>
-                    <HorizontalStackLayout Spacing="10">
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Label
+                        FontAttributes="Bold"
+                        HorizontalOptions="FillAndExpand"
+                        Text="Product Description"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="10">
                         <Frame HorizontalOptions="FillAndExpand" Padding="3,0,0,0">
-                            <Entry Placeholder="Product Description" TextColor="Black"></Entry>
+                            <Editor TextColor="Black" HeightRequest="150" Text="{Binding Product[0].product_desc}"
+                                    x:Name="lblProductDesc"></Editor>
                         </Frame>
-                    </HorizontalStackLayout>
-                    <HorizontalStackLayout Spacing="10">
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Label
+                        FontAttributes="Bold"
+                        HorizontalOptions="FillAndExpand"
+                        Text="Product Quantity"/>
+                        <Label
+                        FontAttributes="Bold"
+                        HorizontalOptions="FillAndExpand"
+                        Text="Product UPC"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="10">
                         <Frame HorizontalOptions="FillAndExpand" Padding="3,0,0,0">
-                            <Entry Placeholder="Product Quantity" TextColor="Black"></Entry>
+                            <Entry TextColor="Black" Keyboard="Numeric" Text="{Binding Product[0].product_qty}"
+                                   x:Name="lblProductQty"></Entry>
                         </Frame>
                         <Frame HorizontalOptions="FillAndExpand" Padding="3,0,0,0">
-                            <Entry Placeholder="Product UPC" TextColor="Black"></Entry>
+                            <Entry TextColor="Black" Keyboard="Numeric" Text="{Binding Product[0].product_upc}"
+                                   x:Name="lblProductUpc"></Entry>
                         </Frame>
-                    </HorizontalStackLayout>
-                    <HorizontalStackLayout Spacing="10">
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Label
+                        FontAttributes="Bold"
+                        HorizontalOptions="FillAndExpand"
+                        Text="Product Category"/>
+                        <Label
+                        FontAttributes="Bold"
+                        HorizontalOptions="FillAndExpand"
+                        Text="Low Stock Alert"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="10">
                         <Frame HorizontalOptions="FillAndExpand" Padding="3,0,0,0">
-                            <Entry Placeholder="Product Category" TextColor="Black"></Entry>
+                            <ScrollView>
+                                <StackLayout x:Name="CategoryPickerBinding"></StackLayout>
+                            </ScrollView>
                         </Frame>
                         <Frame HorizontalOptions="FillAndExpand" Padding="3,0,0,0">
-                            <Entry Placeholder="Low Stock Alert" TextColor="Black"></Entry>
+                            <Entry Keyboard="Numeric" TextColor="Black" Text="{Binding Product[0].low_stock_alert}"
+                                   x:Name="lblLowStockAlert"></Entry>
                         </Frame>
-                    </HorizontalStackLayout>
+                    </StackLayout>
                 </VerticalStackLayout>
+
             </ScrollView>
+
+            <StackLayout Grid.Row="1" Orientation="Horizontal" Spacing="5" Margin="5" HorizontalOptions="FillAndExpand">
+                <Button Text="Save Changes" HorizontalOptions="FillAndExpand"
+                        x:Name="BtnSaveChanges" Clicked="BtnSaveChanges_Clicked">
+                    <Button.ImageSource>
+                        <FontImageSource FontFamily="FABootstrap" Glyph="&#xF525;" />
+                    </Button.ImageSource>
+                </Button>
+                <Button Text="Cancel" HorizontalOptions="FillAndExpand" 
+                        BackgroundColor="{DynamicResource Gray300}" x:Name="BtnCancel" Clicked="BtnCancel_Clicked">
+                    <Button.ImageSource>
+                        <FontImageSource FontFamily="FABootstrap" Glyph="&#xF659;" />
+                    </Button.ImageSource>
+                </Button>
+            </StackLayout>
+            <StackLayout x:Name="LoadingModule">
+                <ActivityIndicator HeightRequest="50" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" IsVisible="{Binding isLoading}" IsRunning="{Binding isLoading}" BackgroundColor="Transparent" Color="{DynamicResource PrimaryDark}" />
+            </StackLayout>
         </Grid>
     </VerticalStackLayout>
 </ContentPage>

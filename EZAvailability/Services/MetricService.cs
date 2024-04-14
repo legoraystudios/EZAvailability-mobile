@@ -1,4 +1,4 @@
-﻿using EZAvailability.Data;
+﻿using EZAvailability.Model;
 using EZAvailability.Services.Base;
 using EZAvailability.ViewModel;
 using System;
@@ -14,7 +14,7 @@ namespace EZAvailability.Services
     {
         public MetricService() { }
 
-        public async static Task<ResponseData> GetMetrics()
+        public async static Task<ResponseModel> GetMetrics()
         {
 
             // Set the API Endpoint to make the request
@@ -28,7 +28,7 @@ namespace EZAvailability.Services
             // Check if the URL Exist in ConnnectionUrl
             if (ConnectionViewModel.ConnectionUrl == "" || ConnectionViewModel.ConnectionUrl == "Not Found")
             {
-                return new ResponseData { StatusCode = -1, JsonResponse = null };
+                return new ResponseModel { StatusCode = -1, JsonResponse = null };
             }
 
             using (HttpClient client = new HttpClient(handler))
@@ -49,12 +49,12 @@ namespace EZAvailability.Services
                 if (apiResponse.IsSuccessStatusCode)
                 {
                     // Return OK Status and User data if the request was success
-                    return new ResponseData { StatusCode = 200, JsonResponse = jsonResponse }; ;
+                    return new ResponseModel { StatusCode = 200, JsonResponse = jsonResponse }; ;
                 }
                 else
                 {
                     // Request was not successful
-                    return new ResponseData { StatusCode = (int)apiResponse.StatusCode, JsonResponse = jsonResponse };
+                    return new ResponseModel { StatusCode = (int)apiResponse.StatusCode, JsonResponse = jsonResponse };
                 }
             }
         }

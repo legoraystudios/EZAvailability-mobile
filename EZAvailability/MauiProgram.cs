@@ -28,7 +28,6 @@ namespace EZAvailability
 
             builder.Services.AddSingleton(AudioManager.Current);
             builder.Services.AddTransient<ScanProductView>();
-            builder.Services.AddTransient<Views.ProductView, ViewModel.ProductViewModel>();
 
 #if DEBUG
             builder.Logging.AddDebug();

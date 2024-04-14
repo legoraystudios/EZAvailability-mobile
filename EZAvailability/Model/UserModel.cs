@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EZAvailability.Data
+namespace EZAvailability.Model
 {
-    public class UserData
+    public class UserModel
     {
         public int id {  get; set; }
         public string first_name { get; set; }

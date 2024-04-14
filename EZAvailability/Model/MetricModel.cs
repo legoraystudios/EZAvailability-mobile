@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EZAvailability.Data
+namespace EZAvailability.Model
 {
-    public class MetricData
+    public class MetricModel
     {
         public int total_products {  get; set; }
         public int total_stock { get; set; }

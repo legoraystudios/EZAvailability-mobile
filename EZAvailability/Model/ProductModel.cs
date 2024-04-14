@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EZAvailability.Data
+namespace EZAvailability.Model
 {
-    public class ProductData
+    public class ProductModel
     {
         public long product_id {  get; set; }
         public string product_name { get; set; }

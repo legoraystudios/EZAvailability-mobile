@@ -24,19 +24,31 @@
             </Grid>
 
             <HorizontalStackLayout>
-                <Frame Grid.Row="0" Grid.Column="0" BackgroundColor="{DynamicResource Primary}" BorderColor="Transparent">
+                <Frame Grid.Row="0" Grid.Column="0" BackgroundColor="{DynamicResource Primary}" 
+                       BorderColor="Transparent">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnScanItemTapped" />
+                    </Frame.GestureRecognizers>
                     <StackLayout Orientation="Vertical">
                         <Label FontFamily="FABootstrap" Text="&#xF601;" TextColor="{DynamicResource White}" FontSize="Large" HorizontalOptions="Center" />
                         <Label Text="Scan Item" TextColor="{DynamicResource White}" />
                     </StackLayout>
                 </Frame>
-                <Frame Grid.Row="0" Grid.Column="1" BackgroundColor="{DynamicResource Primary}" BorderColor="Transparent">
+                <Frame Grid.Row="0" Grid.Column="1" BackgroundColor="{DynamicResource Primary}" 
+                       BorderColor="Transparent">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnShoppingListTapped" />
+                    </Frame.GestureRecognizers>
                     <StackLayout Orientation="Vertical">
                         <Label FontFamily="FABootstrap" Text="&#xF244;" TextColor="{DynamicResource White}" FontSize="Large" HorizontalOptions="Center" />
                         <Label Text="Shopping List" TextColor="{DynamicResource White}" />
                     </StackLayout>
                 </Frame>
-                <Frame Grid.Row="0" Grid.Column="2" BackgroundColor="{DynamicResource Primary}" BorderColor="Transparent">
+                <Frame Grid.Row="0" Grid.Column="2" BackgroundColor="{DynamicResource Primary}" 
+                       BorderColor="Transparent">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnInventoryTapped" />
+                    </Frame.GestureRecognizers>
                     <StackLayout Orientation="Vertical">
                         <Label FontFamily="FABootstrap" Text="&#xF28C;" TextColor="{DynamicResource White}" FontSize="Large" HorizontalOptions="Center" />
                         <Label Text="Inventory" TextColor="{DynamicResource White}" />
@@ -68,10 +80,10 @@
             <FontImageSource FontFamily="FABootstrap" Glyph="&#xF505;" Size="20" Color="{DynamicResource Primary}" />
         </FlyoutItem.Icon>
     </FlyoutItem>
-    <FlyoutItem Title="Sign Out">
-        <FlyoutItem.Icon>
+    <MenuItem Text="Sign Out" x:Name="BtnSignOut" Clicked="BtnSignOut_Clicked" >
+        <MenuItem.IconImageSource>
             <FontImageSource FontFamily="FABootstrap" Glyph="&#xF1BE;" Size="20" Color="{DynamicResource Danger}" />
-        </FlyoutItem.Icon>
-    </FlyoutItem>
+        </MenuItem.IconImageSource>
+    </MenuItem>
 
 </Shell>

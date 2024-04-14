@@ -1,5 +1,6 @@
-using EZAvailability.Data;
+using EZAvailability.Model;
 using EZAvailability.Services;
+using EZAvailability.Utilities;
 using Newtonsoft.Json;
 using Plugin.Maui.Audio;
 using ZXing.Net.Maui;
@@ -9,7 +10,9 @@ namespace EZAvailability.Views;
 
 public partial class ScanProductView : ContentPage
 {
-	public ScanProductView()
+    private SnackBars snackBar = new SnackBars();
+
+    public ScanProductView()
 	{
 		InitializeComponent();
         barcodeReader.IsDetecting = true;
@@ -40,26 +43,32 @@ public partial class ScanProductView : ContentPage
         Dispatcher.Dispatch(async () =>
         {
             var barcodeResult = e.Results[0].Value;
-            var productUpc = long.Parse(barcodeResult);
 
-            await Navigation.PushAsync(new ProductView(productUpc));
+            if (long.TryParse(barcodeResult, out long productUpc))
+            {
+                await Navigation.PushAsync(new ProductView(productUpc));
+            } else
+            {
+                snackBar.Snackbar_InvalidBarcode();
+            }
+
         });
     }
 
     private async Task LoadUser()
     {
-        List<UserData> userInfo = await CheckIfLogin();
+        List<UserModel> userInfo = await CheckIfLogin();
         BindingContext = userInfo;
     }
 
-    private async Task<List<UserData>> CheckIfLogin()
+    private async Task<List<UserModel>> CheckIfLogin()
     {
         try
         {
-            ResponseData response = await AuthService.Token();
+            ResponseModel response = await AuthService.Token();
             string jsonResponse = response.JsonResponse;
 
-            List<UserData> userData = JsonConvert.DeserializeObject<List<UserData>>(jsonResponse);
+            List<UserModel> userData = JsonConvert.DeserializeObject<List<UserModel>>(jsonResponse);
 
             if (response.StatusCode != 200)
             {

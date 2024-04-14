@@ -1,12 +1,12 @@
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
-using EZAvailability.Data;
 using EZAvailability.Services;
 using Newtonsoft.Json;
 using Plugin.Maui.Audio;
 using ZXing.Net.Maui;
 using EZAvailability.Utilities;
 using ZXing.Net.Maui.Controls;
+using EZAvailability.Model;
 
 namespace EZAvailability.Views;
 
@@ -49,33 +49,39 @@ public partial class ScanInView : ContentPage
             Dispatcher.Dispatch(async () =>
             {
                 var barcodeResult = e.Results[0].Value;
-                var productUpc = long.Parse(barcodeResult);
 
-                ResponseData response = await ScanService.ScanIn(productUpc, qty);
-                string jsonResponse = response.JsonResponse;
-
-                ScanData scanData = JsonConvert.DeserializeObject<ScanData>(jsonResponse);
-
-                if (response.StatusCode == 200)
+                if (long.TryParse(barcodeResult, out long productUpc))
                 {
-                    snackBar.Snackbar_ScanInSuccess(productUpc, qty);
-                    var successSound = AudioManager.Current.CreatePlayer(await FileSystem.OpenAppPackageFileAsync("success.mp3"));
-                    successSound.Play();
-                }
-                else
-                {
-                    // Check if the errors object is not null
-                    if (scanData.errors != null)
+                    ResponseModel response = await ScanService.ScanIn(productUpc, qty);
+                    string jsonResponse = response.JsonResponse;
+
+                    ErrorModel errorData = JsonConvert.DeserializeObject<ErrorModel>(jsonResponse);
+
+                    if (response.StatusCode == 200)
                     {
-                        if (scanData.errors.errCode == "Prod04")
+                        snackBar.Snackbar_ScanInSuccess(productUpc, qty);
+                        var successSound = AudioManager.Current.CreatePlayer(await FileSystem.OpenAppPackageFileAsync("success.mp3"));
+                        successSound.Play();
+                    }
+                    else
+                    {
+                        // Check if the errors object is not null
+                        if (errorData.errors != null)
                         {
-                            snackBar.Snackbar_ScansErrorProd04(Navigation);
-                        }
-                        else if (scanData.errors.errCode == "Prod05")
-                        {
-                            snackBar.Snackbar_ScansErrorProd05();
+                            if (errorData.errors.errCode == "Prod04")
+                            {
+                                snackBar.Snackbar_ScansErrorProd04(Navigation);
+                            }
+                            else if (errorData.errors.errCode == "Prod05")
+                            {
+                                snackBar.Snackbar_ScansErrorProd05();
+                            }
                         }
                     }
+
+                } else
+                {
+                    snackBar.Snackbar_InvalidBarcode();
                 }
 
                 await Task.Delay(3000);
@@ -91,18 +97,18 @@ public partial class ScanInView : ContentPage
 
     private async Task LoadUser()
     {
-        List<UserData> userInfo = await CheckIfLogin();
+        List<UserModel> userInfo = await CheckIfLogin();
         BindingContext = userInfo;
     }
 
-    private async Task<List<UserData>> CheckIfLogin()
+    private async Task<List<UserModel>> CheckIfLogin()
     {
         try
         {
-            ResponseData response = await AuthService.Token();
+            ResponseModel response = await AuthService.Token();
             string jsonResponse = response.JsonResponse;
 
-            List<UserData> userData = JsonConvert.DeserializeObject<List<UserData>>(jsonResponse);
+            List<UserModel> userData = JsonConvert.DeserializeObject<List<UserModel>>(jsonResponse);
 
             if (response.StatusCode != 200)
             {
@@ -151,7 +157,13 @@ public partial class ScanInView : ContentPage
             ((Entry)sender).Text = e.OldTextValue;
         } else if (!string.IsNullOrEmpty(e.NewTextValue))
         {
-            qty = int.Parse(e.NewTextValue);
+            if (int.TryParse(e.NewTextValue, out int parsedQty))
+            {
+                qty = parsedQty;
+            } else
+            {
+                ((Entry)sender).Text = e.OldTextValue;
+            }
         }
     }
 }

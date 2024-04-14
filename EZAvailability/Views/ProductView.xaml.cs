@@ -1,4 +1,4 @@
-using EZAvailability.Data;
+using EZAvailability.Model;
 using EZAvailability.Services;
 using EZAvailability.Utilities;
 using EZAvailability.ViewModel.Base;
@@ -12,17 +12,17 @@ public partial class ProductView : ContentPage
 {
     private BaseViewModel baseViewModel = new BaseViewModel();
     private SnackBars snackBar = new SnackBars();
-    public long productUpc;
+    private long productUpc;
 
     // Product Lists
-    List<ProductData> productInfo;
-    public List<ProductData> Product { get; set; }
+    List<ProductModel> productInfo;
+    public List<ProductModel> Product { get; set; }
 
     public ProductView(long productUpc)
-	{
+    {
         this.productUpc = productUpc;
 
-		InitializeComponent();
+        InitializeComponent();
         LoadingModule.BindingContext = baseViewModel;
 
     }
@@ -37,8 +37,7 @@ public partial class ProductView : ContentPage
 
     private async Task LoadUser()
     {
-        List<UserData> userInfo = await CheckIfLogin();
-        BindingContext = userInfo;
+        await CheckIfLogin();
     }
 
     private async Task LoadProduct()
@@ -50,15 +49,15 @@ public partial class ProductView : ContentPage
         baseViewModel.isLoading = false;
     }
 
-    private async Task<List<ProductData>> GetProduct()
+    private async Task<List<ProductModel>> GetProduct()
     {
         try
         {
 
-            ResponseData response = await ProductService.GetProductsByUpc(productUpc);
+            ResponseModel response = await ProductService.GetProductsByUpc(productUpc);
             string jsonResponse = response.JsonResponse;
 
-            List<ProductData> productData = JsonConvert.DeserializeObject<List<ProductData>>(jsonResponse);
+            List<ProductModel> productData = JsonConvert.DeserializeObject<List<ProductModel>>(jsonResponse);
 
             if (response.StatusCode != 200)
             {
@@ -81,14 +80,14 @@ public partial class ProductView : ContentPage
 
     }
 
-    private async Task<List<UserData>> CheckIfLogin()
+    private async Task<List<UserModel>> CheckIfLogin()
     {
         try
         {
-            ResponseData response = await AuthService.Token();
+            ResponseModel response = await AuthService.Token();
             string jsonResponse = response.JsonResponse;
 
-            List<UserData> userData = JsonConvert.DeserializeObject<List<UserData>>(jsonResponse);
+            List<UserModel> userData = JsonConvert.DeserializeObject<List<UserModel>>(jsonResponse);
 
             if (response.StatusCode != 200)
             {
@@ -108,6 +107,6 @@ public partial class ProductView : ContentPage
 
     private async void EditProductBtn_Clicked(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(new EditProductView());
+        await Navigation.PushAsync(new EditProductView(productUpc));
     }
 }

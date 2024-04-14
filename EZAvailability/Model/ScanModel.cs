@@ -4,15 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EZAvailability.Data
+namespace EZAvailability.Model
 {
-    public class ScanData
+    public class ScanModel
     {
         public ErrorObject errors { get; set; }
     }
 
-    public class ErrorObject
+   /* public class ErrorObject
     {
         public string errCode { get; set; }
-    }
+    }*/
 }

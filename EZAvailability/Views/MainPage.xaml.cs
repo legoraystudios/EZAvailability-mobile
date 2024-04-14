@@ -4,14 +4,16 @@ using EZAvailability.ViewModel.Base;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using Font = Microsoft.Maui.Font;
-using EZAvailability.Data;
 using EZAvailability.Services;
+using EZAvailability.Model;
+using EZAvailability.Utilities;
 
 namespace EZAvailability
 {
     public partial class MainPage : ContentPage
     {
         private BaseViewModel baseViewModel = new BaseViewModel();
+        private SnackBars snackBar = new SnackBars();
 
         public MainPage()
         {
@@ -77,7 +79,7 @@ namespace EZAvailability
         {
             try
             {
-                ResponseData response = await AuthService.Token();
+                ResponseModel response = await AuthService.Token();
 
                 if (response.StatusCode == 200)
                 {
@@ -110,29 +112,13 @@ namespace EZAvailability
                 if (response == 200)
                 {
 
-                    var snackbarOptions = new SnackbarOptions
-                    {
-                        BackgroundColor = Color.FromHex("#198754"),
-                        Font = Font.SystemFontOfSize(15),
-                        TextColor = Color.FromHex("#FFFFFF")
-                    };
-
-                    var snackbar = Snackbar.Make("You're Logged in! Redirecting...", null, "", null, snackbarOptions);
-                    snackbar.Show();
+                    snackBar.Snackbar_SuccessLogin();
                     await Shell.Current.GoToAsync("//DashboardView");
 
                 }
                 else
                 {
-                    var snackbarOptions = new SnackbarOptions
-                    {
-                        BackgroundColor = Color.FromHex("#DC3545"),
-                        Font = Font.SystemFontOfSize(15),
-                        TextColor = Color.FromHex("#FFFFFF")
-                    };
-
-                    var snackbar = Snackbar.Make("ERROR | Email or password are incorrect.", null, "", null, snackbarOptions);
-                    snackbar.Show();
+                    snackBar.Snackbar_ErrorLogin();
                 }
 
                 baseViewModel.isLoading = false;

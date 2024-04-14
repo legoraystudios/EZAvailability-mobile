@@ -1,4 +1,4 @@
-using EZAvailability.Data;
+using EZAvailability.Model;
 using EZAvailability.Services;
 using EZAvailability.ViewModel;
 using EZAvailability.ViewModel.Base;
@@ -11,11 +11,10 @@ public partial class InventoryView : ContentPage
 {
     // Initializing ViewModel
     private BaseViewModel baseViewModel = new BaseViewModel();
-    private ProductViewModel productViewModel = new ProductViewModel();
 
     // Product Lists
-    List<ProductData> productInfo;
-    public List<ProductData> Products { get; set; }
+    List<ProductModel> productInfo;
+    public List<ProductModel> Products { get; set; }
 
     // Pagination variables for product ListView
     private static int limitPerPage = 10;
@@ -45,7 +44,7 @@ public partial class InventoryView : ContentPage
 
     private async Task LoadUser()
     {
-        List<UserData> userInfo = await CheckIfLogin();
+        List<UserModel> userInfo = await CheckIfLogin();
         BindingContext = userInfo;
     }
 
@@ -62,11 +61,11 @@ public partial class InventoryView : ContentPage
 
 
 
-    private async Task<List<ProductData>> GetProducts()
+    private async Task<List<ProductModel>> GetProducts()
     {
         try
         {
-            ResponseData response;
+            ResponseModel response;
 
             if (SearchValue != null || SearchValue != "") // If the Search Bar is NOT NULL
             {
@@ -100,7 +99,7 @@ public partial class InventoryView : ContentPage
 
             string jsonResponse = response.JsonResponse;
 
-            List<ProductData> productData = JsonConvert.DeserializeObject<List<ProductData>>(jsonResponse);
+            List<ProductModel> productData = JsonConvert.DeserializeObject<List<ProductModel>>(jsonResponse);
 
             if (response.StatusCode != 200)
             {
@@ -109,9 +108,9 @@ public partial class InventoryView : ContentPage
 
             return productData;
         }
-        catch (Exception ex)
+        catch
         {
-            await DisplayAlert("Error", "An error has occured while loading the products. Please, try again later." + ex, "Okay");
+            await DisplayAlert("Error", "An error has occured while loading the products. Please, try again later.", "Okay");
             return null;
         }
 
@@ -149,7 +148,7 @@ public partial class InventoryView : ContentPage
     private async Task LoadNextPageProducts()
     {
         // Call your method to fetch the next page of products
-        List<ProductData> nextPageProducts = await GetProducts();
+        List<ProductModel> nextPageProducts = await GetProducts();
 
         if (nextPageProducts.Count > 0)
         {
@@ -164,14 +163,14 @@ public partial class InventoryView : ContentPage
 
     }
 
-    private async Task<List<UserData>> CheckIfLogin()
+    private async Task<List<UserModel>> CheckIfLogin()
     {
         try
         {
-            ResponseData response = await AuthService.Token();
+            ResponseModel response = await AuthService.Token();
             string jsonResponse = response.JsonResponse;
 
-            List<UserData> userData = JsonConvert.DeserializeObject<List<UserData>>(jsonResponse);
+            List<UserModel> userData = JsonConvert.DeserializeObject<List<UserModel>>(jsonResponse);
 
             if (response.StatusCode != 200)
             {
@@ -204,7 +203,7 @@ public partial class InventoryView : ContentPage
     {
         if (e.SelectedItem != null)
         {
-            ProductData selectedProduct = e.SelectedItem as ProductData;
+            ProductModel selectedProduct = e.SelectedItem as ProductModel;
             long productUpc = selectedProduct.product_upc;
 
             await Navigation.PushAsync(new ProductView(productUpc));

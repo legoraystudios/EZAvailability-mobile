@@ -1,10 +1,9 @@
-using EZAvailability.Data;
 using EZAvailability.Services;
 using EZAvailability.ViewModel.Base;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Text.Json.Serialization;
-using UserData = EZAvailability.Data.UserData;
+using EZAvailability.Model;
 
 namespace EZAvailability.Views;
 
@@ -31,24 +30,24 @@ public partial class DashboardView : ContentPage
 
     private async Task LoadUser()
     {
-        List<UserData> userInfo = await CheckIfLogin();
+        List<UserModel> userInfo = await CheckIfLogin();
         BindingContext = userInfo;
     }
 
     private async Task LoadMetrics()
     {
-        List<MetricData> metricInfo = await GetMetrics();
+        List<MetricModel> metricInfo = await GetMetrics();
         DashboardMetrics.BindingContext = metricInfo;
     }
 
-    private async Task<List<MetricData>> GetMetrics()
+    private async Task<List<MetricModel>> GetMetrics()
     {
         try
         {
-            ResponseData response = await MetricService.GetMetrics();
+            ResponseModel response = await MetricService.GetMetrics();
             string jsonResponse = response.JsonResponse;
 
-            List<MetricData> metricData = JsonConvert.DeserializeObject<List<MetricData>>(jsonResponse);
+            List<MetricModel> metricData = JsonConvert.DeserializeObject<List<MetricModel>>(jsonResponse);
 
             if (response.StatusCode != 200)
             {
@@ -62,17 +61,16 @@ public partial class DashboardView : ContentPage
             return null;
         }
 
-
     }
 
-    private async Task<List<UserData>> CheckIfLogin()
+    private async Task<List<UserModel>> CheckIfLogin()
     {
         try
         {
-            ResponseData response = await AuthService.Token();
+            ResponseModel response = await AuthService.Token();
             string jsonResponse = response.JsonResponse;
 
-            List<UserData> userData = JsonConvert.DeserializeObject<List<UserData>>(jsonResponse);
+            List<UserModel> userData = JsonConvert.DeserializeObject<List<UserModel>>(jsonResponse);
 
             if (response.StatusCode != 200)
             {
@@ -80,13 +78,13 @@ public partial class DashboardView : ContentPage
             }
 
             return userData;
-        } catch (Exception)
+        }
+        catch (Exception)
         {
             await DisplayAlert("Error", "An error has occured while performing your request. Please, try again later.", "Okay");
             await Navigation.PushAsync(new MainPage());
             return null;
         }
-
 
     }
 

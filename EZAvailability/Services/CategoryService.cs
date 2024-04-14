@@ -1,23 +1,22 @@
 ﻿using EZAvailability.Model;
 using EZAvailability.Services.Base;
 using EZAvailability.ViewModel;
-using Microsoft.Maui.ApplicationModel.Communication;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace EZAvailability.Services
 {
-    public class ScanService
+    public class CategoryService
     {
-        public async static Task<ResponseModel> ScanIn(long productUpc, int qty)
+
+        public async static Task<ResponseModel> GetCategories(int limitPerPage, int page)
         {
 
             // Set the API Endpoint to make the request
-            string endpoint = ConnectionViewModel.ConnectionUrl + "/scans/in";
+            string endpoint = ConnectionViewModel.ConnectionUrl + "/category?limitPerPage=" + limitPerPage + "&page=" + page;
 
             // Check if the URL Exist in ConnnectionUrl
             if (ConnectionViewModel.ConnectionUrl == "" || ConnectionViewModel.ConnectionUrl == "Not Found")
@@ -27,14 +26,6 @@ namespace EZAvailability.Services
 
             // Set the HTTP Handler
             var handler = BaseService.DefaultHttpClientHandler();
-
-            var requestData = new
-            {
-                productUpc = productUpc,
-                productQty = qty
-            };
-
-            using StringContent jsonContent = new(JsonSerializer.Serialize(requestData), Encoding.UTF8, "application/json");
 
             // Set the Cookie Container in order to set the required
             // session cookies to access the protected content
@@ -51,7 +42,7 @@ namespace EZAvailability.Services
                 }
 
                 // Process the API request
-                HttpResponseMessage apiResponse = await client.PostAsync(endpoint, jsonContent);
+                HttpResponseMessage apiResponse = await client.GetAsync(endpoint);
                 // Obtain the JSON Response
                 string jsonResponse = await apiResponse.Content.ReadAsStringAsync();
 
@@ -69,11 +60,11 @@ namespace EZAvailability.Services
             }
         }
 
-        public async static Task<ResponseModel> ScanOut(long productUpc, int qty)
+        public async static Task<ResponseModel> GetCategoryById(long category_id)
         {
 
             // Set the API Endpoint to make the request
-            string endpoint = ConnectionViewModel.ConnectionUrl + "/scans/out";
+            string endpoint = ConnectionViewModel.ConnectionUrl + "/category?categoryId=" + category_id;
 
             // Check if the URL Exist in ConnnectionUrl
             if (ConnectionViewModel.ConnectionUrl == "" || ConnectionViewModel.ConnectionUrl == "Not Found")
@@ -83,14 +74,6 @@ namespace EZAvailability.Services
 
             // Set the HTTP Handler
             var handler = BaseService.DefaultHttpClientHandler();
-
-            var requestData = new
-            {
-                productUpc = productUpc,
-                productQty = qty
-            };
-
-            using StringContent jsonContent = new(JsonSerializer.Serialize(requestData), Encoding.UTF8, "application/json");
 
             // Set the Cookie Container in order to set the required
             // session cookies to access the protected content
@@ -107,7 +90,7 @@ namespace EZAvailability.Services
                 }
 
                 // Process the API request
-                HttpResponseMessage apiResponse = await client.PostAsync(endpoint, jsonContent);
+                HttpResponseMessage apiResponse = await client.GetAsync(endpoint);
                 // Obtain the JSON Response
                 string jsonResponse = await apiResponse.Content.ReadAsStringAsync();
 
@@ -124,5 +107,6 @@ namespace EZAvailability.Services
                 }
             }
         }
+
     }
 }
