@@ -110,6 +110,8 @@ public partial class EditProductView : ContentPage
 
     }
 
+    // Update product (This method will be executed when the user
+    // taps "Save Changes" on the UI Button.
     private async Task UpdateProduct()
     {
         try

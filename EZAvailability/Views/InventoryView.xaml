@@ -8,6 +8,14 @@
         <qtyconverter:QtyToColorConverter x:Key="QtyToColorConverter" />
     </ContentPage.Resources>
 
+    <ContentPage.ToolbarItems>
+        <ToolbarItem x:Name="BtnCreateProduct" Clicked="CreateProductBtn_Clicked">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="FABootstrap" Glyph="&#xF37D;" Size="20" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
     <ScrollView x:Name="ProductScrollView" Scrolled="OnProductListViewScrolled">
         <StackLayout>
             <HorizontalStackLayout HorizontalOptions="Center" Margin="0,10,0,0">
@@ -32,6 +40,8 @@
                           ItemsSource="{Binding Products}"
                           HasUnevenRows="True" Margin="0,20,0,0"
                           IsPullToRefreshEnabled="True"
+                          IsRefreshing="{Binding isRefreshing}"
+                          RefreshCommand="{Binding RefreshCommand}"
                           ItemSelected="ProductList_ItemSelected">
                     <ListView.ItemTemplate>
                         <DataTemplate>

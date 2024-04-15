@@ -5,6 +5,7 @@ using EZAvailability.ViewModel.Base;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.Security.Cryptography.X509Certificates;
+using System.Windows.Input;
 namespace EZAvailability.Views;
 
 public partial class InventoryView : ContentPage
@@ -23,6 +24,19 @@ public partial class InventoryView : ContentPage
     // Variables for the Search Bar
     private string SearchValue { get; set; }
     private int SelectedSearchType;
+
+    public ICommand RefreshCommand
+    {
+        get
+        {
+            return new Command(async () =>
+            {
+                baseViewModel.isRefreshing = true;
+                await LoadProducts();
+                baseViewModel.isRefreshing = false;
+            });
+        }
+    }
 
     public InventoryView()
     {
@@ -58,8 +72,6 @@ public partial class InventoryView : ContentPage
         BindingContext = this;
         baseViewModel.isLoading = false;
     }
-
-
 
     private async Task<List<ProductModel>> GetProducts()
     {
@@ -208,5 +220,10 @@ public partial class InventoryView : ContentPage
 
             await Navigation.PushAsync(new ProductView(productUpc));
         }
+    }
+
+    private async void CreateProductBtn_Clicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new CreateProductView());
     }
 }

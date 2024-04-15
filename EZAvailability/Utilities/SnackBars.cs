@@ -105,6 +105,19 @@ namespace EZAvailability.Utilities
             snackbar.Show();
         }
 
+        public void Snackbar_SuccessProductCreated()
+        {
+            var snackbarOptions = new SnackbarOptions
+            {
+                BackgroundColor = Color.FromHex("#198754"),
+                Font = Microsoft.Maui.Font.SystemFontOfSize(15),
+                TextColor = Color.FromHex("#FFFFFF")
+            };
+
+            var snackbar = Snackbar.Make("Product modifies successfully.", null, "", null, snackbarOptions);
+            snackbar.Show();
+        }
+
         public void Snackbar_SuccessProductModified()
         {
             var snackbarOptions = new SnackbarOptions
@@ -168,7 +181,7 @@ namespace EZAvailability.Utilities
                 TextColor = Color.FromHex("#FFFFFF")
             };
 
-            var snackbar = Snackbar.Make("Successfully logged out!", null, "", null, snackbarOptions);
+            var snackbar = Snackbar.Make("Successfully Signed out!", null, "", null, snackbarOptions);
             snackbar.Show();
         }
 

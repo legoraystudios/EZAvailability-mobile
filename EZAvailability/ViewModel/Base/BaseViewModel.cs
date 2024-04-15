@@ -11,6 +11,13 @@ namespace EZAvailability.ViewModel.Base
     public class BaseViewModel : INotifyPropertyChanged
     {
 
+        public bool _isRefreshing;
+        public bool isRefreshing
+        {
+            get { return _isRefreshing; }
+            set { SetProperty(ref _isRefreshing, value); }
+        }
+
         public bool _isLoading;
         public bool isLoading
         {

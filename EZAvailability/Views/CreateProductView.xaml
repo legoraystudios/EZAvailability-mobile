@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="EZAvailability.Views.CreateProductView"
+             Title="Create Product">
+    <VerticalStackLayout>
+        <Grid RowDefinitions="*, Auto">
+
+            <ScrollView Grid.Row="0">
+
+                <VerticalStackLayout
+                    Padding="10"
+                    Spacing="2"
+                    Margin="0,5,5,5">
+                    <StackLayout Orientation="Horizontal">
+                        <Label
+                        FontAttributes="Bold"
+                        HorizontalOptions="FillAndExpand"
+                        Text="Product Name"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Frame HorizontalOptions="FillAndExpand" Padding="3,0,0,0">
+                            <Entry TextColor="Black" x:Name="lblProductName"></Entry>
+                        </Frame>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Label
+                        FontAttributes="Bold"
+                        HorizontalOptions="FillAndExpand"
+                        Text="Product Description"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Frame HorizontalOptions="FillAndExpand" Padding="3,0,0,0">
+                            <Editor TextColor="Black" HeightRequest="150"
+                                    x:Name="lblProductDesc"></Editor>
+                        </Frame>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Label
+                        FontAttributes="Bold"
+                        HorizontalOptions="FillAndExpand"
+                        Text="Product Quantity"/>
+                        <Label
+                        FontAttributes="Bold"
+                        HorizontalOptions="FillAndExpand"
+                        Text="Product UPC"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Frame HorizontalOptions="FillAndExpand" Padding="3,0,0,0">
+                            <Entry TextColor="Black" Keyboard="Numeric"
+                                   x:Name="lblProductQty"></Entry>
+                        </Frame>
+                        <Frame HorizontalOptions="FillAndExpand" Padding="3,0,0,0">
+                            <Entry TextColor="Black" Keyboard="Numeric"
+                                   x:Name="lblProductUpc"></Entry>
+                        </Frame>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Label
+                        FontAttributes="Bold"
+                        HorizontalOptions="FillAndExpand"
+                        Text="Product Category"/>
+                        <Label
+                        FontAttributes="Bold"
+                        HorizontalOptions="FillAndExpand"
+                        Text="Low Stock Alert"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Frame HorizontalOptions="FillAndExpand" Padding="3,0,0,0">
+                            <ScrollView>
+                                <StackLayout x:Name="CategoryPickerBinding"></StackLayout>
+                            </ScrollView>
+                        </Frame>
+                        <Frame HorizontalOptions="FillAndExpand" Padding="3,0,0,0">
+                            <Entry Keyboard="Numeric" TextColor="Black"
+                                   x:Name="lblLowStockAlert"></Entry>
+                        </Frame>
+                    </StackLayout>
+                </VerticalStackLayout>
+
+            </ScrollView>
+
+            <StackLayout Grid.Row="1" Orientation="Horizontal" Spacing="5" Margin="5" HorizontalOptions="FillAndExpand">
+                <Button Text="Create Product" HorizontalOptions="FillAndExpand"
+                        x:Name="BtnCreateProduct" Clicked="BtnCreateProduct_Clicked">
+                    <Button.ImageSource>
+                        <FontImageSource FontFamily="FABootstrap" Glyph="&#xF37D;" />
+                    </Button.ImageSource>
+                </Button>
+                <Button Text="Cancel" HorizontalOptions="FillAndExpand" 
+                        BackgroundColor="{DynamicResource Gray300}" x:Name="BtnCancel" Clicked="BtnCancel_Clicked">
+                    <Button.ImageSource>
+                        <FontImageSource FontFamily="FABootstrap" Glyph="&#xF659;" />
+                    </Button.ImageSource>
+                </Button>
+            </StackLayout>
+            <StackLayout x:Name="LoadingModule">
+                <ActivityIndicator HeightRequest="50" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" IsVisible="{Binding isLoading}" IsRunning="{Binding isLoading}" BackgroundColor="Transparent" Color="{DynamicResource PrimaryDark}" />
+            </StackLayout>
+        </Grid>
+    </VerticalStackLayout>
+</ContentPage>
